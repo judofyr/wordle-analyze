@@ -1,10 +1,16 @@
 require 'json'
 require 'pp'
 
-module Wordle
-  module_function
+class Wordle
+  if d = __dir__
+    WORDS_FILE = d + "/words.json"
+  else
+    raise "Unable to locate word list"
+  end
 
-  def score(answer, guess)
+  def self.score(answer, guess)
+    # @type var result: Array[reply]
+    # @type var available: Array[String]
     result = Array.new(answer.size)
 
     available = []
@@ -31,12 +37,12 @@ module Wordle
     result
   end
 
-  def words
-    @words ||= JSON.parse(File.read(__dir__ + "/words.json"))
+  def self.words
+    @words ||= JSON.parse(File.read(WORDS_FILE))
   end
 
-  def run
-    # This stores the
+  def self.run
+    # @type var worst: Array[Array[String, Integer, Array[reply]]]
     worst = []
 
     n = words.size
@@ -54,7 +60,7 @@ module Wordle
 
     puts "Summary:"
     worst.sort_by! { |_, v| v }
-    worst[0,15].each do |word, comb|
+    worst[0,15]&.each do |word, comb|
       puts "  #{word} (worst case leads to #{comb} possible answers)"
     end
   end

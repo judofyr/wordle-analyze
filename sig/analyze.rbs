@@ -1,0 +1,9 @@
+module Wordle
+  type reply = :green | :yellow | nil
+
+  WORDS_FILE: String
+
+  def self.score: (String, String) -> Array[reply]
+  def self.words: -> Array[String]
+  def self.run: -> void
+end
